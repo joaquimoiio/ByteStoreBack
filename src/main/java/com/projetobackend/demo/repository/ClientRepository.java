@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ClientRepository extends JpaRepository<ClientModel,Integer> {
+public interface ClientRepository extends JpaRepository<ClientModel, Integer> {
     Optional<ClientModel> findById(int id);
 
     Optional<ClientModel> findAllById(int id);
