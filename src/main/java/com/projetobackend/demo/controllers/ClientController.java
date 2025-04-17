@@ -4,21 +4,22 @@ package com.projetobackend.demo.controllers;
 import com.projetobackend.demo.dto.ClientRecordDto;
 import com.projetobackend.demo.models.ClientModel;
 import com.projetobackend.demo.repository.ClientRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/client")
+@RequestMapping("/cliente")
 
 public class ClientController {
+
     @Autowired
     private ClientRepository clientRepository;
 
@@ -38,7 +39,7 @@ public class ClientController {
     public ResponseEntity<Object> getOneClient(@PathVariable(value = "id") int id) {
         Optional<ClientModel> client0 = clientRepository.findAllById(id);
         if (client0.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto nã encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
         }
         return ResponseEntity.status(HttpStatus.OK).body(client0.get());
     }
