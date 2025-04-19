@@ -81,7 +81,6 @@ public class ClientController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha atual incorreta");
         }
 
-        // Atualizar a senha
         clientModel.setDsSenha(senhaRecordDto.novaSenha());
         clientRepository.save(clientModel);
 
