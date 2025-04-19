@@ -2,6 +2,7 @@ package com.projetobackend.demo.controllers;
 
 
 import com.projetobackend.demo.dto.ClientRecordDto;
+import com.projetobackend.demo.dto.SenhaRecordDto;
 import com.projetobackend.demo.models.ClientModel;
 import com.projetobackend.demo.repository.ClientRepository;
 import org.springframework.beans.BeanUtils;
@@ -65,5 +66,25 @@ public class ClientController {
         clientRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Cliente excluído com sucesso");
 
+    }
+    @PostMapping("/{id}/alterar-senha")
+    public ResponseEntity<Object> alterarSenha(@PathVariable(value = "id") int id,
+                                               @RequestBody @Valid SenhaRecordDto senhaRecordDto) {
+        Optional<ClientModel> client0 = clientRepository.findById(id);
+        if (client0.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não Encontrado");
+        }
+
+        var clientModel = client0.get();
+
+        if (!clientModel.getDsSenha().equals(senhaRecordDto.senhaAtual())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Senha atual incorreta");
+        }
+
+        // Atualizar a senha
+        clientModel.setDsSenha(senhaRecordDto.novaSenha());
+        clientRepository.save(clientModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Senha alterada com sucesso");
     }
 }

@@ -1,30 +1,43 @@
 package com.projetobackend.demo.models;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 
 @Entity
-@Table(name = "TBCLIENTE")
-public class ClientModel  implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Table(name="TBCLIENT")
+public class ClientModel implements Serializable {
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(nullable = false)
     private String nmCliente;
+
+    @Column(nullable = false)
     private String nuCpf;
+
+    @Column(nullable = false)
     private String dsEmail;
+
+    @Column(nullable = false)
     private String dtNasc;
+
+    @Column(nullable = false)
     private String nuTelefone;
+
+    @Column(nullable = false)
     private String dsSenha;
 
-    public int getIdCliente() {
+    // Construtor vazio necessário para JPA
+    public ClientModel() {
+    }
+
+    // Getters e Setters
+    public Integer getId() {
         return id;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.id = idCliente;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNmCliente() {
