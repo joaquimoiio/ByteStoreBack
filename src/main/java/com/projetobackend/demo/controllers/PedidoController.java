@@ -58,22 +58,18 @@ public class PedidoController {
     @PostMapping
     @Transactional
     public ResponseEntity<Object> addPedido(@RequestBody @Valid PedidoRecordDto pedidoRecordDto) {
-        // Verificar se o cliente existe
         Optional<ClientModel> clienteOpt = clientRepository.findById(pedidoRecordDto.clienteId());
         if (clienteOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
         }
 
-        // Criar novo pedido
         PedidoModel pedido = new PedidoModel();
         pedido.setCliente(clienteOpt.get());
         pedido.setCepEntrega(pedidoRecordDto.cepEntrega());
         pedido.setEnderecoEntrega(pedidoRecordDto.enderecoEntrega());
 
-        // Criar itens do pedido
         List<ItemPedidoModel> itens = new ArrayList<>();
         for (ItemPedidoRecordDto itemDto : pedidoRecordDto.itens()) {
-            // Verificar se o produto existe
             Optional<ProdutoModel> produtoOpt = produtoRepository.findById(itemDto.produtoId());
             if (produtoOpt.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -82,17 +78,14 @@ public class PedidoController {
 
             ProdutoModel produto = produtoOpt.get();
 
-            // Verificar estoque
             if (produto.getEstoque() < itemDto.quantidade()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Estoque insuficiente para o produto: " + produto.getNome());
             }
 
-            // Atualizar estoque
             produto.setEstoque(produto.getEstoque() - itemDto.quantidade());
             produtoRepository.save(produto);
 
-            // Criar item do pedido
             ItemPedidoModel item = new ItemPedidoModel();
             item.setPedido(pedido);
             item.setProduto(produto);
@@ -105,7 +98,6 @@ public class PedidoController {
         pedido.setItens(itens);
         pedido.calcularValorTotal();
 
-        // Salvar pedido
         PedidoModel savedPedido = pedidoRepository.save(pedido);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPedido);
@@ -135,20 +127,17 @@ public class PedidoController {
 
         PedidoModel pedido = pedidoOpt.get();
 
-        // Se o pedido já estiver cancelado ou entregue, não permitir cancelamento
         if ("Cancelado".equals(pedido.getStatus()) || "Entregue".equals(pedido.getStatus())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Não é possível cancelar um pedido com status: " + pedido.getStatus());
         }
 
-        // Devolver itens ao estoque
         for (ItemPedidoModel item : pedido.getItens()) {
             ProdutoModel produto = item.getProduto();
             produto.setEstoque(produto.getEstoque() + item.getQuantidade());
             produtoRepository.save(produto);
         }
 
-        // Cancelar pedido
         pedido.setStatus("Cancelado");
         pedidoRepository.save(pedido);
 

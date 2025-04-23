@@ -36,13 +36,12 @@ public class PedidoModel implements Serializable {
     @Column
     private String enderecoEntrega;
 
-    // Construtor vazio necessário para JPA
     public PedidoModel() {
         this.dataHora = LocalDateTime.now();
         this.status = "Processando";
     }
 
-    // Getters e Setters
+
     public Integer getId() {
         return id;
     }

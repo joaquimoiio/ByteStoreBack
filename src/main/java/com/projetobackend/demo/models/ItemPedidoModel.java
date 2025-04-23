@@ -25,7 +25,6 @@ public class ItemPedidoModel implements Serializable {
     @Column(nullable = false)
     private BigDecimal precoUnitario;
 
-    // Construtor vazio necessário para JPA
     public ItemPedidoModel() {
     }
 

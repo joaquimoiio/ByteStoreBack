@@ -11,7 +11,6 @@ import java.util.Optional;
 public interface PedidoRepository extends JpaRepository<PedidoModel, Integer> {
     Optional<PedidoModel> findById(int id);
 
-    List<PedidoModel> findByClienteId(int clienteId);
 
     List<PedidoModel> findByClienteIdOrderByDataHoraDesc(int clienteId);
 }

@@ -42,11 +42,9 @@ public class ProdutoModel implements Serializable {
     @Column(nullable = false)
     private Boolean destaque;
 
-    // Construtor vazio necessário para JPA
     public ProdutoModel() {
     }
 
-    // Getters e Setters
     public Integer getId() {
         return id;
     }
