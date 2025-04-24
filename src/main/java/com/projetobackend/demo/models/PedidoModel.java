@@ -16,7 +16,7 @@ public class PedidoModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private ClientModel cliente;
+    private ClientModel clienteId;
 
     @Column(nullable = false)
     private LocalDateTime dataHora;
@@ -41,7 +41,6 @@ public class PedidoModel implements Serializable {
         this.status = "Processando";
     }
 
-    // Alterar os getters e setters
     public Integer getCdPedido() {
         return cdPedido;
     }
@@ -50,12 +49,12 @@ public class PedidoModel implements Serializable {
         this.cdPedido = cdPedido;
     }
 
-    public ClientModel getCliente() {
-        return cliente;
+    public ClientModel getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente(ClientModel cliente) {
-        this.cliente = cliente;
+    public void setClienteId(ClientModel cliente) {
+        this.clienteId = cliente;
     }
 
     public LocalDateTime getDataHora() {
@@ -106,7 +105,6 @@ public class PedidoModel implements Serializable {
         this.dsEntrega = enderecoEntrega;
     }
 
-    // Método para calcular o valor total - manter como está
     public void calcularValorTotal() {
         this.vlTotal = this.itens.stream()
                 .map(item -> item.getVlUnitario().multiply(new BigDecimal(item.getQtPedido())))

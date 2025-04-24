@@ -11,10 +11,10 @@ import java.util.List;
 public class ProdutoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdProduto; // Alterado de id para cdProduto
+    private Integer cdProduto;
 
     @Column(nullable = false)
-    private String nmProduto; // Alterado de nome para nmProduto
+    private String nmProduto;
 
     @Column(nullable = false)
     private String dsProduto;
@@ -23,7 +23,7 @@ public class ProdutoModel implements Serializable {
     private BigDecimal vlAntigo;
 
     @Column(nullable = false)
-    private BigDecimal vlProduto; // Alterado de precoAtual para vlProduto
+    private BigDecimal vlProduto;
 
     @Column(nullable = false)
     private Integer dsEstoque;

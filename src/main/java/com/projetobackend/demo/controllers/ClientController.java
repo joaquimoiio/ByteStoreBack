@@ -1,6 +1,5 @@
 package com.projetobackend.demo.controllers;
 
-
 import com.projetobackend.demo.dto.ClientRecordDto;
 import com.projetobackend.demo.dto.SenhaRecordDto;
 import com.projetobackend.demo.models.ClientModel;
@@ -28,6 +27,8 @@ public class ClientController {
     public ResponseEntity<ClientModel> addClient(@RequestBody @Valid ClientRecordDto clientRecordDto) {
         var clientModel = new ClientModel();
         BeanUtils.copyProperties(clientRecordDto, clientModel);
+        // Fix for dtNasc to dtNascimento
+        clientModel.setDtNasc(clientRecordDto.dtNasc());
         return ResponseEntity.status(HttpStatus.CREATED).body(clientRepository.save(clientModel));
     }
 
@@ -36,41 +37,44 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.OK).body(clientRepository.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneClient(@PathVariable(value = "id") int id) {
-        Optional<ClientModel> client0 = clientRepository.findAllById(id);
+    @GetMapping("/{cdCliente}")
+    public ResponseEntity<Object> getOneClient(@PathVariable(value = "cdCliente") int cdCliente) {
+        Optional<ClientModel> client0 = clientRepository.findByCdCliente(cdCliente);
         if (client0.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
         }
         return ResponseEntity.status(HttpStatus.OK).body(client0.get());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateClient(@PathVariable(value = "id") int id,
+    @PutMapping("/{cdCliente}")
+    public ResponseEntity<Object> updateClient(@PathVariable(value = "cdCliente") int cdCliente,
                                                @RequestBody @Valid ClientRecordDto clientRecordDto) {
-        Optional<ClientModel> client0 = clientRepository.findById(id);
+        Optional<ClientModel> client0 = clientRepository.findByCdCliente(cdCliente);
         if (client0.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não Encontrado");
         }
         var clientModel = client0.get();
         BeanUtils.copyProperties(clientRecordDto, clientModel);
+        // Fix for dtNasc to dtNascimento
+        clientModel.setDtNasc(clientRecordDto.dtNasc());
         return ResponseEntity.status(HttpStatus.OK).body(clientRepository.save(clientModel));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteClient(@PathVariable(value = "id") int id) {
-        Optional<ClientModel> cliente0 = clientRepository.findById(id);
+    @DeleteMapping("/{cdCliente}")
+    public ResponseEntity<Object> deleteClient(@PathVariable(value = "cdCliente") int cdCliente) {
+        Optional<ClientModel> cliente0 = clientRepository.findByCdCliente(cdCliente);
         if (cliente0.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não Encontrado");
         }
-        clientRepository.deleteById(id);
+        clientRepository.delete(cliente0.get());
         return ResponseEntity.status(HttpStatus.OK).body("Cliente excluído com sucesso");
 
     }
-    @PostMapping("/{id}/alterar-senha")
-    public ResponseEntity<Object> alterarSenha(@PathVariable(value = "id") int id,
+
+    @PostMapping("/{cdCliente}/alterar-senha")
+    public ResponseEntity<Object> alterarSenha(@PathVariable(value = "cdCliente") int cdCliente,
                                                @RequestBody @Valid SenhaRecordDto senhaRecordDto) {
-        Optional<ClientModel> client0 = clientRepository.findById(id);
+        Optional<ClientModel> client0 = clientRepository.findByCdCliente(cdCliente);
         if (client0.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não Encontrado");
         }

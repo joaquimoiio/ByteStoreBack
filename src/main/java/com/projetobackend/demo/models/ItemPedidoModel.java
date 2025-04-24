@@ -28,7 +28,6 @@ public class ItemPedidoModel implements Serializable {
     public ItemPedidoModel() {
     }
 
-    // Alterar os getters e setters
     public Integer getCdItemPedido() {
         return cdItemPedido;
     }
@@ -69,7 +68,7 @@ public class ItemPedidoModel implements Serializable {
         this.vlUnitario = precoUnitario;
     }
 
-    // Método para calcular o subtotal do item - manter como está
+
     public BigDecimal getSubtotal() {
         return vlUnitario.multiply(new BigDecimal(qtPedido));
     }

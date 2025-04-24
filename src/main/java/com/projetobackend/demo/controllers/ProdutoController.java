@@ -25,6 +25,9 @@ public class ProdutoController {
     public ResponseEntity<ProdutoModel> addProduto(@RequestBody @Valid ProdutoRecordDto produtoRecordDto) {
         var produtoModel = new ProdutoModel();
         BeanUtils.copyProperties(produtoRecordDto, produtoModel);
+        // Adjust field names
+        produtoModel.setNmProduto(produtoRecordDto.nmProduto());
+        produtoModel.setVlProduto(produtoRecordDto.vlProduto());
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produtoModel));
     }
 
@@ -33,9 +36,9 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneProduto(@PathVariable(value = "id") int id) {
-        Optional<ProdutoModel> produto = produtoRepository.findById(id);
+    @GetMapping("/{cdProduto}")
+    public ResponseEntity<Object> getOneProduto(@PathVariable(value = "cdProduto") int cdProduto) {
+        Optional<ProdutoModel> produto = produtoRepository.findByCdProduto(cdProduto);
         if (produto.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
         }
@@ -47,35 +50,38 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.findByDestaqueTrue());
     }
 
-    @GetMapping("/categoria/{categoria}")
-    public ResponseEntity<List<ProdutoModel>> getProdutosByCategoria(@PathVariable(value = "categoria") String categoria) {
-        return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.findByCategoria(categoria));
+    @GetMapping("/categoria/{dsCategoria}")
+    public ResponseEntity<List<ProdutoModel>> getProdutosByCategoria(@PathVariable(value = "dsCategoria") String dsCategoria) {
+        return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.findByDsCategoria(dsCategoria));
     }
 
     @GetMapping("/busca")
-    public ResponseEntity<List<ProdutoModel>> searchProdutos(@RequestParam(value = "nome") String nome) {
-        return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.findByNomeContainingIgnoreCase(nome));
+    public ResponseEntity<List<ProdutoModel>> searchProdutos(@RequestParam(value = "nmProduto") String nmProduto) {
+        return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.findByNmProdutoContainingIgnoreCase(nmProduto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateProduto(@PathVariable(value = "id") int id,
+    @PutMapping("/{cdProduto}")
+    public ResponseEntity<Object> updateProduto(@PathVariable(value = "cdProduto") int cdProduto,
                                                 @RequestBody @Valid ProdutoRecordDto produtoRecordDto) {
-        Optional<ProdutoModel> produto = produtoRepository.findById(id);
+        Optional<ProdutoModel> produto = produtoRepository.findByCdProduto(cdProduto);
         if (produto.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
         }
         var produtoModel = produto.get();
         BeanUtils.copyProperties(produtoRecordDto, produtoModel);
+        // Adjust field names
+        produtoModel.setNmProduto(produtoRecordDto.nmProduto());
+        produtoModel.setVlProduto(produtoRecordDto.vlProduto());
         return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produtoModel));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteProduto(@PathVariable(value = "id") int id) {
-        Optional<ProdutoModel> produto = produtoRepository.findById(id);
+    @DeleteMapping("/{cdProduto}")
+    public ResponseEntity<Object> deleteProduto(@PathVariable(value = "cdProduto") int cdProduto) {
+        Optional<ProdutoModel> produto = produtoRepository.findByCdProduto(cdProduto);
         if (produto.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
         }
-        produtoRepository.deleteById(id);
+        produtoRepository.delete(produto.get());
         return ResponseEntity.status(HttpStatus.OK).body("Produto excluído com sucesso");
     }
 }

@@ -1,3 +1,4 @@
+
 package com.projetobackend.demo.dto;
 
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public record ProdutoRecordDto(
         @NotBlank String nmProduto,
-        @NotBlank String descricao,
+        @NotBlank String dsProduto,
         @NotNull BigDecimal precoAntigo,
         @NotNull BigDecimal vlProduto,
         @NotNull Integer estoque,
