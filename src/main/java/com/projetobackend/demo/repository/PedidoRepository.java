@@ -12,5 +12,5 @@ public interface PedidoRepository extends JpaRepository<PedidoModel, Integer> {
     Optional<PedidoModel> findById(int id);
 
 
-    List<PedidoModel> findByClienteIdOrderByDataHoraDesc(int clienteId);
+    List<PedidoModel> findByClienteIdOrderByDataHoraDesc(int id);
 }

@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Table(name="TBCLIENT")
 public class ClientModel implements Serializable {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdCliente;
+    private Integer id;
 
     @Column(nullable = false)
     private String nmCliente;
@@ -19,7 +19,7 @@ public class ClientModel implements Serializable {
     private String dsEmail;
 
     @Column(nullable = false)
-    private String dtNascimento;
+    private String dtNasc;
 
     @Column(nullable = false)
     private String nuTelefone;
@@ -32,12 +32,12 @@ public class ClientModel implements Serializable {
     }
 
     // Getters e Setters
-    public Integer getCdCliente() {
-        return cdCliente;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCdCliente(Integer id) {
-        this.cdCliente = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNmCliente() {
@@ -64,12 +64,12 @@ public class ClientModel implements Serializable {
         this.dsEmail = dsEmail;
     }
 
-    public String getDtNascimento() {
-        return dtNascimento;
+    public String getDtNasc() {
+        return dtNasc;
     }
 
-    public void setDtNascimento(String dtNasc) {
-        this.dtNascimento = dtNasc;
+    public void setDtNasc(String dtNasc) {
+        this.dtNasc = dtNasc;
     }
 
     public String getNuTelefone() {

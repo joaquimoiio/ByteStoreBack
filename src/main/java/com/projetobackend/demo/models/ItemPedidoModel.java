@@ -9,68 +9,68 @@ import java.math.BigDecimal;
 public class ItemPedidoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdItemPedido;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
-    private PedidoModel cdPedido;
+    private PedidoModel pedido;
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
-    private ProdutoModel cdProduto;
+    private ProdutoModel produto;
 
     @Column(nullable = false)
-    private Integer qtQuantidade;
+    private Integer quantidade;
 
     @Column(nullable = false)
-    private BigDecimal vlPrecoUnitario;
+    private BigDecimal precoUnitario;
 
     public ItemPedidoModel() {
     }
 
     // Getters e Setters
-    public Integer getCdItemPedido() {
-        return cdItemPedido;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCdItemPedido(Integer id) {
-        this.cdItemPedido = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public PedidoModel getCdPedido() {
-        return cdPedido;
+    public PedidoModel getPedido() {
+        return pedido;
     }
 
-    public void setCdPedido(PedidoModel pedido) {
-        this.cdPedido = pedido;
+    public void setPedido(PedidoModel pedido) {
+        this.pedido = pedido;
     }
 
-    public ProdutoModel getCdProduto() {
-        return cdProduto;
+    public ProdutoModel getProduto() {
+        return produto;
     }
 
-    public void setCdProduto(ProdutoModel produto) {
-        this.cdProduto = produto;
+    public void setProduto(ProdutoModel produto) {
+        this.produto = produto;
     }
 
-    public Integer getQtQuantidade() {
-        return qtQuantidade;
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
-    public void setQtQuantidade(Integer quantidade) {
-        this.qtQuantidade = quantidade;
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 
-    public BigDecimal getVlPrecoUnitario() {
-        return vlPrecoUnitario;
+    public BigDecimal getPrecoUnitario() {
+        return precoUnitario;
     }
 
-    public void setVlPrecoUnitario(BigDecimal precoUnitario) {
-        this.vlPrecoUnitario = precoUnitario;
+    public void setPrecoUnitario(BigDecimal precoUnitario) {
+        this.precoUnitario = precoUnitario;
     }
 
     // Método para calcular o subtotal do item
     public BigDecimal getSubtotal() {
-        return vlPrecoUnitario.multiply(new BigDecimal(qtQuantidade));
+        return precoUnitario.multiply(new BigDecimal(quantidade));
     }
 }

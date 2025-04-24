@@ -12,104 +12,104 @@ import java.util.List;
 public class PedidoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdPedido;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private ClientModel cdCliente;
+    private ClientModel cliente;
 
     @Column(nullable = false)
-    private LocalDateTime dtDataHora;
+    private LocalDateTime dataHora;
 
     @Column(nullable = false)
-    private String dsStatus;
+    private String status;
 
     @Column(nullable = false)
-    private BigDecimal vlTotal;
+    private BigDecimal valorTotal;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cdPedido")
-    private List<ItemPedidoModel> dsItens = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
+    private List<ItemPedidoModel> itens = new ArrayList<>();
 
     @Column
-    private String nuCEP;
+    private String cepEntrega;
 
     @Column
-    private String dsEndereco;
+    private String enderecoEntrega;
 
     public PedidoModel() {
-        this.dtDataHora = LocalDateTime.now();
-        this.dsStatus = "Processando";
+        this.dataHora = LocalDateTime.now();
+        this.status = "Processando";
     }
 
 
-    public Integer getCdPedido() {
-        return cdPedido;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCdPedido(Integer id) {
-        this.cdPedido = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public ClientModel getCdCliente() {
-        return cdCliente;
+    public ClientModel getCliente() {
+        return cliente;
     }
 
-    public void setCdCliente(ClientModel cliente) {
-        this.cdCliente = cliente;
+    public void setCliente(ClientModel cliente) {
+        this.cliente = cliente;
     }
 
-    public LocalDateTime getDtDataHora() {
-        return dtDataHora;
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
-    public void setDtDataHora(LocalDateTime dataHora) {
-        this.dtDataHora = dataHora;
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
     }
 
-    public String getDsStatus() {
-        return dsStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDsStatus(String status) {
-        this.dsStatus = status;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public BigDecimal getVlTotal() {
-        return vlTotal;
+    public BigDecimal getValorTotal() {
+        return valorTotal;
     }
 
-    public void setVlTotal(BigDecimal valorTotal) {
-        this.vlTotal = valorTotal;
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
-    public List<ItemPedidoModel> getDsItens() {
-        return dsItens;
+    public List<ItemPedidoModel> getItens() {
+        return itens;
     }
 
-    public void setDsItens(List<ItemPedidoModel> itens) {
-        this.dsItens = itens;
+    public void setItens(List<ItemPedidoModel> itens) {
+        this.itens = itens;
     }
 
-    public String getNuCEP() {
-        return nuCEP;
+    public String getCepEntrega() {
+        return cepEntrega;
     }
 
-    public void setNuCEP(String cepEntrega) {
-        this.nuCEP = cepEntrega;
+    public void setCepEntrega(String cepEntrega) {
+        this.cepEntrega = cepEntrega;
     }
 
-    public String getDsEndereco() {
-        return dsEndereco;
+    public String getEnderecoEntrega() {
+        return enderecoEntrega;
     }
 
-    public void setDsEndereco(String enderecoEntrega) {
-        this.dsEndereco = enderecoEntrega;
+    public void setEnderecoEntrega(String enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
     }
 
     // Método para calcular o valor total
     public void calcularValorTotal() {
-        this.vlTotal = this.dsItens.stream()
-                .map(item -> item.getVlPrecoUnitario().multiply(new BigDecimal(item.getQtQuantidade())))
+        this.valorTotal = this.itens.stream()
+                .map(item -> item.getPrecoUnitario().multiply(new BigDecimal(item.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
