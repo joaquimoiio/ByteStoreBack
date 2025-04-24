@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class ItemPedidoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer cdItemPedido; // Alterado de id para cdItemPedido
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
@@ -28,13 +28,13 @@ public class ItemPedidoModel implements Serializable {
     public ItemPedidoModel() {
     }
 
-    // Getters e Setters
-    public Integer getId() {
-        return id;
+    // Alterar os getters e setters
+    public Integer getCdItemPedido() {
+        return cdItemPedido;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCdItemPedido(Integer cdItemPedido) {
+        this.cdItemPedido = cdItemPedido;
     }
 
     public PedidoModel getPedido() {
@@ -69,7 +69,7 @@ public class ItemPedidoModel implements Serializable {
         this.precoUnitario = precoUnitario;
     }
 
-    // Método para calcular o subtotal do item
+    // Método para calcular o subtotal do item - manter como está
     public BigDecimal getSubtotal() {
         return precoUnitario.multiply(new BigDecimal(quantidade));
     }

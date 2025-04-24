@@ -11,10 +11,10 @@ import java.util.List;
 public class ProdutoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer cdProduto; // Alterado de id para cdProduto
 
     @Column(nullable = false)
-    private String nome;
+    private String nmProduto; // Alterado de nome para nmProduto
 
     @Column(nullable = false)
     private String descricao;
@@ -23,7 +23,7 @@ public class ProdutoModel implements Serializable {
     private BigDecimal precoAntigo;
 
     @Column(nullable = false)
-    private BigDecimal precoAtual;
+    private BigDecimal vlProduto; // Alterado de precoAtual para vlProduto
 
     @Column(nullable = false)
     private Integer estoque;
@@ -45,20 +45,20 @@ public class ProdutoModel implements Serializable {
     public ProdutoModel() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getCdProduto() {
+        return cdProduto;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCdProduto(Integer cdProduto) {
+        this.cdProduto = cdProduto;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNmProduto() {
+        return nmProduto;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNmProduto(String nmProduto) {
+        this.nmProduto = nmProduto;
     }
 
     public String getDescricao() {
@@ -77,12 +77,12 @@ public class ProdutoModel implements Serializable {
         this.precoAntigo = precoAntigo;
     }
 
-    public BigDecimal getPrecoAtual() {
-        return precoAtual;
+    public BigDecimal getVlProduto() {
+        return vlProduto;
     }
 
-    public void setPrecoAtual(BigDecimal precoAtual) {
-        this.precoAtual = precoAtual;
+    public void setVlProduto(BigDecimal vlProduto) {
+        this.vlProduto = vlProduto;
     }
 
     public Integer getEstoque() {

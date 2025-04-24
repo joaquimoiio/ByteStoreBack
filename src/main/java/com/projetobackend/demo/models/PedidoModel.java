@@ -12,7 +12,7 @@ import java.util.List;
 public class PedidoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer cdPedido; // Alterado de id para cdPedido
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
@@ -41,13 +41,13 @@ public class PedidoModel implements Serializable {
         this.status = "Processando";
     }
 
-
-    public Integer getId() {
-        return id;
+    // Alterar os getters e setters
+    public Integer getCdPedido() {
+        return cdPedido;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCdPedido(Integer cdPedido) {
+        this.cdPedido = cdPedido;
     }
 
     public ClientModel getCliente() {
@@ -106,7 +106,7 @@ public class PedidoModel implements Serializable {
         this.enderecoEntrega = enderecoEntrega;
     }
 
-    // Método para calcular o valor total
+    // Método para calcular o valor total - manter como está
     public void calcularValorTotal() {
         this.valorTotal = this.itens.stream()
                 .map(item -> item.getPrecoUnitario().multiply(new BigDecimal(item.getQuantidade())))
