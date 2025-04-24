@@ -63,9 +63,9 @@ public class PedidoController {
         }
 
         PedidoModel pedido = new PedidoModel();
-        pedido.setCliente(clienteOpt.get());
-        pedido.setCepEntrega(pedidoRecordDto.cepEntrega());
-        pedido.setEnderecoEntrega(pedidoRecordDto.enderecoEntrega());
+        pedido.setCdCliente(clienteOpt.get());
+        pedido.setNuCEP(pedidoRecordDto.cepEntrega());
+        pedido.setDsEndereco(pedidoRecordDto.enderecoEntrega());
 
         List<ItemPedidoModel> itens = new ArrayList<>();
         for (ItemPedidoRecordDto itemDto : pedidoRecordDto.itens()) {
@@ -77,24 +77,24 @@ public class PedidoController {
 
             ProdutoModel produto = produtoOpt.get();
 
-            if (produto.getEstoque() < itemDto.quantidade()) {
+            if (produto.getQtEstoque() < itemDto.quantidade()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Estoque insuficiente para o produto: " + produto.getNome());
+                        .body("Estoque insuficiente para o produto: " + produto.getNmProduto());
             }
 
-            produto.setEstoque(produto.getEstoque() - itemDto.quantidade());
+            produto.setQtEstoque(produto.getQtEstoque() - itemDto.quantidade());
             produtoRepository.save(produto);
 
             ItemPedidoModel item = new ItemPedidoModel();
-            item.setPedido(pedido);
-            item.setProduto(produto);
-            item.setQuantidade(itemDto.quantidade());
-            item.setPrecoUnitario(itemDto.precoUnitario());
+            item.setCdPedido(pedido);
+            item.setCdProduto(produto);
+            item.setQtQuantidade(itemDto.quantidade());
+            item.setVlPrecoUnitario(itemDto.precoUnitario());
 
             itens.add(item);
         }
 
-        pedido.setItens(itens);
+        pedido.setDsItens(itens);
         pedido.calcularValorTotal();
 
         PedidoModel savedPedido = pedidoRepository.save(pedido);
@@ -111,7 +111,7 @@ public class PedidoController {
         }
 
         PedidoModel pedido = pedidoOpt.get();
-        pedido.setStatus(novoStatus);
+        pedido.setDsStatus(novoStatus);
 
         return ResponseEntity.status(HttpStatus.OK).body(pedidoRepository.save(pedido));
     }
@@ -126,18 +126,18 @@ public class PedidoController {
 
         PedidoModel pedido = pedidoOpt.get();
 
-        if ("Cancelado".equals(pedido.getStatus()) || "Entregue".equals(pedido.getStatus())) {
+        if ("Cancelado".equals(pedido.getDsStatus()) || "Entregue".equals(pedido.getDsStatus())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Não é possível cancelar um pedido com status: " + pedido.getStatus());
+                    .body("Não é possível cancelar um pedido com status: " + pedido.getDsStatus());
         }
 
-        for (ItemPedidoModel item : pedido.getItens()) {
-            ProdutoModel produto = item.getProduto();
-            produto.setEstoque(produto.getEstoque() + item.getQuantidade());
+        for (ItemPedidoModel item : pedido.getDsItens()) {
+            ProdutoModel produto = item.getCdProduto();
+            produto.setQtEstoque(produto.getQtEstoque() + item.getQtQuantidade());
             produtoRepository.save(produto);
         }
 
-        pedido.setStatus("Cancelado");
+        pedido.setDsStatus("Cancelado");
         pedidoRepository.save(pedido);
 
         return ResponseEntity.status(HttpStatus.OK).body("Pedido cancelado com sucesso");

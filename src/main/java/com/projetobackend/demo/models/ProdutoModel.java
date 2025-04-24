@@ -11,28 +11,28 @@ import java.util.List;
 public class ProdutoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer cdProduto;
 
     @Column(nullable = false)
-    private String nome;
+    private String nmProduto;
 
     @Column(nullable = false)
-    private String descricao;
+    private String dsDescricao;
 
     @Column(nullable = false)
-    private BigDecimal precoAntigo;
+    private BigDecimal vlPrecoAntigo;
 
     @Column(nullable = false)
-    private BigDecimal precoAtual;
+    private BigDecimal vlPrecoAtual;
 
     @Column(nullable = false)
-    private Integer estoque;
+    private Integer qtEstoque;
 
     @Column(nullable = false)
-    private String categoria;
+    private String dsCategoria;
 
     @Column(nullable = false)
-    private String imagemPrincipal;
+    private String imgProduto;
 
     @ElementCollection
     @CollectionTable(name = "TBIMAGENS_GALERIA", joinColumns = @JoinColumn(name = "produto_id"))
@@ -45,68 +45,68 @@ public class ProdutoModel implements Serializable {
     public ProdutoModel() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getCdProduto() {
+        return cdProduto;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCdProduto(Integer id) {
+        this.cdProduto = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNmProduto() {
+        return nmProduto;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNmProduto(String nome) {
+        this.nmProduto = nome;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDsDescricao() {
+        return dsDescricao;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDsDescricao(String descricao) {
+        this.dsDescricao = descricao;
     }
 
-    public BigDecimal getPrecoAntigo() {
-        return precoAntigo;
+    public BigDecimal getVlPrecoAntigo() {
+        return vlPrecoAntigo;
     }
 
-    public void setPrecoAntigo(BigDecimal precoAntigo) {
-        this.precoAntigo = precoAntigo;
+    public void setVlPrecoAntigo(BigDecimal precoAntigo) {
+        this.vlPrecoAntigo = precoAntigo;
     }
 
-    public BigDecimal getPrecoAtual() {
-        return precoAtual;
+    public BigDecimal getVlPrecoAtual() {
+        return vlPrecoAtual;
     }
 
-    public void setPrecoAtual(BigDecimal precoAtual) {
-        this.precoAtual = precoAtual;
+    public void setVlPrecoAtual(BigDecimal precoAtual) {
+        this.vlPrecoAtual = precoAtual;
     }
 
-    public Integer getEstoque() {
-        return estoque;
+    public Integer getQtEstoque() {
+        return qtEstoque;
     }
 
-    public void setEstoque(Integer estoque) {
-        this.estoque = estoque;
+    public void setQtEstoque(Integer estoque) {
+        this.qtEstoque = estoque;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getDsCategoria() {
+        return dsCategoria;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setDsCategoria(String categoria) {
+        this.dsCategoria = categoria;
     }
 
-    public String getImagemPrincipal() {
-        return imagemPrincipal;
+    public String getImgProduto() {
+        return imgProduto;
     }
 
-    public void setImagemPrincipal(String imagemPrincipal) {
-        this.imagemPrincipal = imagemPrincipal;
+    public void setImgProduto(String imagemPrincipal) {
+        this.imgProduto = imagemPrincipal;
     }
 
     public List<String> getImagensGaleria() {
