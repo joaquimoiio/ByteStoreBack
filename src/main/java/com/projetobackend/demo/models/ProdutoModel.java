@@ -17,19 +17,19 @@ public class ProdutoModel implements Serializable {
     private String nmProduto; // Alterado de nome para nmProduto
 
     @Column(nullable = false)
-    private String descricao;
+    private String dsProduto;
 
     @Column(nullable = false)
-    private BigDecimal precoAntigo;
+    private BigDecimal vlAntigo;
 
     @Column(nullable = false)
     private BigDecimal vlProduto; // Alterado de precoAtual para vlProduto
 
     @Column(nullable = false)
-    private Integer estoque;
+    private Integer dsEstoque;
 
     @Column(nullable = false)
-    private String categoria;
+    private String dsCategoria;
 
     @Column(nullable = false)
     private String imagemPrincipal;
@@ -61,20 +61,20 @@ public class ProdutoModel implements Serializable {
         this.nmProduto = nmProduto;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDsProduto() {
+        return dsProduto;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDsProduto(String descricao) {
+        this.dsProduto = descricao;
     }
 
-    public BigDecimal getPrecoAntigo() {
-        return precoAntigo;
+    public BigDecimal getVlAntigo() {
+        return vlAntigo;
     }
 
-    public void setPrecoAntigo(BigDecimal precoAntigo) {
-        this.precoAntigo = precoAntigo;
+    public void setVlAntigo(BigDecimal precoAntigo) {
+        this.vlAntigo = precoAntigo;
     }
 
     public BigDecimal getVlProduto() {
@@ -85,20 +85,20 @@ public class ProdutoModel implements Serializable {
         this.vlProduto = vlProduto;
     }
 
-    public Integer getEstoque() {
-        return estoque;
+    public Integer getDsEstoque() {
+        return dsEstoque;
     }
 
-    public void setEstoque(Integer estoque) {
-        this.estoque = estoque;
+    public void setDsEstoque(Integer estoque) {
+        this.dsEstoque = estoque;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getDsCategoria() {
+        return dsCategoria;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setDsCategoria(String categoria) {
+        this.dsCategoria = categoria;
     }
 
     public String getImagemPrincipal() {

@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ClientModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdCliente; // Alterado de id para cdCliente
+    private Integer cdCliente;
 
     @Column(nullable = false)
     private String nmCliente;
@@ -20,7 +20,7 @@ public class ClientModel implements Serializable {
     private String dsEmail;
 
     @Column(nullable = false)
-    private String dtNascimento; // Alterado de dtNasc para dtNascimento
+    private String dtNasc;
 
     @Column(nullable = false)
     private String nuTelefone;
@@ -63,12 +63,12 @@ public class ClientModel implements Serializable {
         this.dsEmail = dsEmail;
     }
 
-    public String getDtNascimento() {
-        return dtNascimento;
+    public String getDtNasc() {
+        return dtNasc;
     }
 
-    public void setDtNascimento(String dtNascimento) {
-        this.dtNascimento = dtNascimento;
+    public void setDtNasc(String dtNascimento) {
+        this.dtNasc = dtNascimento;
     }
 
     public String getNuTelefone() {

@@ -12,7 +12,7 @@ import java.util.List;
 public class PedidoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdPedido; // Alterado de id para cdPedido
+    private Integer cdPedido;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
@@ -25,7 +25,7 @@ public class PedidoModel implements Serializable {
     private String status;
 
     @Column(nullable = false)
-    private BigDecimal valorTotal;
+    private BigDecimal vlTotal;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
     private List<ItemPedidoModel> itens = new ArrayList<>();
@@ -34,7 +34,7 @@ public class PedidoModel implements Serializable {
     private String cepEntrega;
 
     @Column
-    private String enderecoEntrega;
+    private String dsEntrega;
 
     public PedidoModel() {
         this.dataHora = LocalDateTime.now();
@@ -74,12 +74,12 @@ public class PedidoModel implements Serializable {
         this.status = status;
     }
 
-    public BigDecimal getValorTotal() {
-        return valorTotal;
+    public BigDecimal getVlTotal() {
+        return vlTotal;
     }
 
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
+    public void setVlTotal(BigDecimal valorTotal) {
+        this.vlTotal = valorTotal;
     }
 
     public List<ItemPedidoModel> getItens() {
@@ -98,18 +98,18 @@ public class PedidoModel implements Serializable {
         this.cepEntrega = cepEntrega;
     }
 
-    public String getEnderecoEntrega() {
-        return enderecoEntrega;
+    public String getDsEntrega() {
+        return dsEntrega;
     }
 
-    public void setEnderecoEntrega(String enderecoEntrega) {
-        this.enderecoEntrega = enderecoEntrega;
+    public void setDsEntrega(String enderecoEntrega) {
+        this.dsEntrega = enderecoEntrega;
     }
 
     // Método para calcular o valor total - manter como está
     public void calcularValorTotal() {
-        this.valorTotal = this.itens.stream()
-                .map(item -> item.getPrecoUnitario().multiply(new BigDecimal(item.getQuantidade())))
+        this.vlTotal = this.itens.stream()
+                .map(item -> item.getVlUnitario().multiply(new BigDecimal(item.getQtPedido())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
