@@ -65,31 +65,31 @@ public class PedidoController {
         PedidoModel pedido = new PedidoModel();
         pedido.setClienteId(clienteOpt.get());
         pedido.setCepEntrega(pedidoRecordDto.cepEntrega());
-        pedido.setDsEntrega(pedidoRecordDto.enderecoEntrega());
+        pedido.setDsEntrega(pedidoRecordDto.dsEntrega());
 
         List<ItemPedidoModel> itens = new ArrayList<>();
         for (ItemPedidoRecordDto itemDto : pedidoRecordDto.itens()) {
-            Optional<ProdutoModel> produtoOpt = produtoRepository.findByCdProduto(itemDto.produtoId());
+            Optional<ProdutoModel> produtoOpt = produtoRepository.findByCdProduto(itemDto.cdItemPedido());
             if (produtoOpt.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Produto não encontrado: ID " + itemDto.produtoId());
+                        .body("Produto não encontrado: ID " + itemDto.cdItemPedido());
             }
 
             ProdutoModel produto = produtoOpt.get();
 
-            if (produto.getDsEstoque() < itemDto.quantidade()) {
+            if (produto.getDsEstoque() < itemDto.qtPedido()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Estoque insuficiente para o produto: " + produto.getNmProduto());
             }
 
-            produto.setDsEstoque(produto.getDsEstoque() - itemDto.quantidade());
+            produto.setDsEstoque(produto.getDsEstoque() - itemDto.qtPedido());
             produtoRepository.save(produto);
 
             ItemPedidoModel item = new ItemPedidoModel();
             item.setPedido(pedido);
             item.setProduto(produto);
-            item.setQtPedido(itemDto.quantidade());
-            item.setVlUnitario(itemDto.precoUnitario());
+            item.setQtPedido(itemDto.qtPedido());
+            item.setVlUnitario(itemDto.vlUnitario());
 
             itens.add(item);
         }

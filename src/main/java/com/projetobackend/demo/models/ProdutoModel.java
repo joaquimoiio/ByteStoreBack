@@ -34,10 +34,8 @@ public class ProdutoModel implements Serializable {
     @Column(nullable = false)
     private String imagemPrincipal;
 
-    @ElementCollection
-    @CollectionTable(name = "TBIMAGENS_GALERIA", joinColumns = @JoinColumn(name = "produto_id"))
-    @Column(name = "url_imagem")
-    private List<String> imagensGaleria = new ArrayList<>();
+    @Column(name = "imagensGaleria")
+    private String imagensGaleria;
 
     @Column(nullable = false)
     private Boolean destaque;
@@ -109,11 +107,11 @@ public class ProdutoModel implements Serializable {
         this.imagemPrincipal = imagemPrincipal;
     }
 
-    public List<String> getImagensGaleria() {
+    public String getImagensGaleria() {
         return imagensGaleria;
     }
 
-    public void setImagensGaleria(List<String> imagensGaleria) {
+    public void setImagensGaleria(String imagensGaleria) {
         this.imagensGaleria = imagensGaleria;
     }
 
