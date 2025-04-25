@@ -39,9 +39,9 @@ public class PedidoController {
         return ResponseEntity.status(HttpStatus.OK).body(pedidoRepository.findAll());
     }
 
-    @GetMapping("/{cdPedido}")
-    public ResponseEntity<Object> getOnePedido(@PathVariable(value = "cdPedido") int cdPedido) {
-        Optional<PedidoModel> pedido = pedidoRepository.findByCdPedido(cdPedido);
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getOnePedido(@PathVariable(value = "id") int id) {
+        Optional<PedidoModel> pedido = pedidoRepository.findById(id);
         if (pedido.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
         }
@@ -51,45 +51,45 @@ public class PedidoController {
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<PedidoModel>> getPedidosByCliente(@PathVariable(value = "clienteId") int clienteId) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(pedidoRepository.findByClienteIdCdClienteOrderByDataHoraDesc(clienteId));
+                .body(pedidoRepository.findByClienteIdOrderByDataHoraDesc(clienteId));
     }
 
     @PostMapping
     @Transactional
     public ResponseEntity<Object> addPedido(@RequestBody @Valid PedidoRecordDto pedidoRecordDto) {
-        Optional<ClientModel> clienteOpt = clientRepository.findByCdCliente(pedidoRecordDto.clienteId());
+        Optional<ClientModel> clienteOpt = clientRepository.findById(pedidoRecordDto.clienteId());
         if (clienteOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
         }
 
         PedidoModel pedido = new PedidoModel();
-        pedido.setClienteId(clienteOpt.get());
+        pedido.setCliente(clienteOpt.get());
         pedido.setCepEntrega(pedidoRecordDto.cepEntrega());
-        pedido.setDsEntrega(pedidoRecordDto.dsEntrega());
+        pedido.setEnderecoEntrega(pedidoRecordDto.enderecoEntrega());
 
         List<ItemPedidoModel> itens = new ArrayList<>();
         for (ItemPedidoRecordDto itemDto : pedidoRecordDto.itens()) {
-            Optional<ProdutoModel> produtoOpt = produtoRepository.findByCdProduto(itemDto.cdItemPedido());
+            Optional<ProdutoModel> produtoOpt = produtoRepository.findById(itemDto.produtoId());
             if (produtoOpt.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Produto não encontrado: ID " + itemDto.cdItemPedido());
+                        .body("Produto não encontrado: ID " + itemDto.produtoId());
             }
 
             ProdutoModel produto = produtoOpt.get();
 
-            if (produto.getDsEstoque() < itemDto.qtPedido()) {
+            if (produto.getEstoque() < itemDto.quantidade()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Estoque insuficiente para o produto: " + produto.getNmProduto());
+                        .body("Estoque insuficiente para o produto: " + produto.getNome());
             }
 
-            produto.setDsEstoque(produto.getDsEstoque() - itemDto.qtPedido());
+            produto.setEstoque(produto.getEstoque() - itemDto.quantidade());
             produtoRepository.save(produto);
 
             ItemPedidoModel item = new ItemPedidoModel();
             item.setPedido(pedido);
             item.setProduto(produto);
-            item.setQtPedido(itemDto.qtPedido());
-            item.setVlUnitario(itemDto.vlUnitario());
+            item.setQuantidade(itemDto.quantidade());
+            item.setPrecoUnitario(itemDto.precoUnitario());
 
             itens.add(item);
         }
@@ -105,7 +105,7 @@ public class PedidoController {
     @PutMapping("/{id}/status")
     public ResponseEntity<Object> updatePedidoStatus(@PathVariable(value = "id") int id,
                                                      @RequestParam String novoStatus) {
-        Optional<PedidoModel> pedidoOpt = pedidoRepository.findByCdPedido(id);
+        Optional<PedidoModel> pedidoOpt = pedidoRepository.findById(id);
         if (pedidoOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
         }
@@ -119,7 +119,7 @@ public class PedidoController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Object> cancelPedido(@PathVariable(value = "id") int id) {
-        Optional<PedidoModel> pedidoOpt = pedidoRepository.findByCdPedido(id);
+        Optional<PedidoModel> pedidoOpt = pedidoRepository.findById(id);
         if (pedidoOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado");
         }
@@ -133,7 +133,7 @@ public class PedidoController {
 
         for (ItemPedidoModel item : pedido.getItens()) {
             ProdutoModel produto = item.getProduto();
-            produto.setDsEstoque(produto.getDsEstoque() + item.getQtPedido());
+            produto.setEstoque(produto.getEstoque() + item.getQuantidade());
             produtoRepository.save(produto);
         }
 

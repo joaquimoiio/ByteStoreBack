@@ -9,11 +9,11 @@ import java.util.Optional;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<ProdutoModel, Integer> {
-    Optional<ProdutoModel> findByCdProduto(int cdProduto);
+    Optional<ProdutoModel> findById(int id);
 
     List<ProdutoModel> findByDestaqueTrue();
 
-    List<ProdutoModel> findByDsCategoria(String dsCategoria);
+    List<ProdutoModel> findByCategoria(String categoria);
 
-    List<ProdutoModel> findByNmProdutoContainingIgnoreCase(String nmProduto);
+    List<ProdutoModel> findByNomeContainingIgnoreCase(String nome);
 }

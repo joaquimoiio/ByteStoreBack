@@ -11,31 +11,33 @@ import java.util.List;
 public class ProdutoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdProduto;
+    private Integer id;
 
     @Column(nullable = false)
-    private String nmProduto;
+    private String nome;
 
     @Column(nullable = false)
-    private String dsProduto;
+    private String descricao;
 
     @Column(nullable = false)
-    private BigDecimal vlAntigo;
+    private BigDecimal precoAntigo;
 
     @Column(nullable = false)
-    private BigDecimal vlProduto;
+    private BigDecimal precoAtual;
 
     @Column(nullable = false)
-    private Integer dsEstoque;
+    private Integer estoque;
 
     @Column(nullable = false)
-    private String dsCategoria;
+    private String categoria;
 
     @Column(nullable = false)
     private String imagemPrincipal;
 
-    @Column(name = "imagensGaleria")
-    private String imagensGaleria;
+    @ElementCollection
+    @CollectionTable(name = "TBIMAGENS_GALERIA", joinColumns = @JoinColumn(name = "produto_id"))
+    @Column(name = "url_imagem")
+    private List<String> imagensGaleria = new ArrayList<>();
 
     @Column(nullable = false)
     private Boolean destaque;
@@ -43,60 +45,60 @@ public class ProdutoModel implements Serializable {
     public ProdutoModel() {
     }
 
-    public Integer getCdProduto() {
-        return cdProduto;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCdProduto(Integer cdProduto) {
-        this.cdProduto = cdProduto;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getNmProduto() {
-        return nmProduto;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNmProduto(String nmProduto) {
-        this.nmProduto = nmProduto;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getDsProduto() {
-        return dsProduto;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDsProduto(String descricao) {
-        this.dsProduto = descricao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public BigDecimal getVlAntigo() {
-        return vlAntigo;
+    public BigDecimal getPrecoAntigo() {
+        return precoAntigo;
     }
 
-    public void setVlAntigo(BigDecimal precoAntigo) {
-        this.vlAntigo = precoAntigo;
+    public void setPrecoAntigo(BigDecimal precoAntigo) {
+        this.precoAntigo = precoAntigo;
     }
 
-    public BigDecimal getVlProduto() {
-        return vlProduto;
+    public BigDecimal getPrecoAtual() {
+        return precoAtual;
     }
 
-    public void setVlProduto(BigDecimal vlProduto) {
-        this.vlProduto = vlProduto;
+    public void setPrecoAtual(BigDecimal precoAtual) {
+        this.precoAtual = precoAtual;
     }
 
-    public Integer getDsEstoque() {
-        return dsEstoque;
+    public Integer getEstoque() {
+        return estoque;
     }
 
-    public void setDsEstoque(Integer estoque) {
-        this.dsEstoque = estoque;
+    public void setEstoque(Integer estoque) {
+        this.estoque = estoque;
     }
 
-    public String getDsCategoria() {
-        return dsCategoria;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setDsCategoria(String categoria) {
-        this.dsCategoria = categoria;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public String getImagemPrincipal() {
@@ -107,11 +109,11 @@ public class ProdutoModel implements Serializable {
         this.imagemPrincipal = imagemPrincipal;
     }
 
-    public String getImagensGaleria() {
+    public List<String> getImagensGaleria() {
         return imagensGaleria;
     }
 
-    public void setImagensGaleria(String imagensGaleria) {
+    public void setImagensGaleria(List<String> imagensGaleria) {
         this.imagensGaleria = imagensGaleria;
     }
 

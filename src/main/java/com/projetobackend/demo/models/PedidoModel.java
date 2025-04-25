@@ -12,11 +12,11 @@ import java.util.List;
 public class PedidoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdPedido;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private ClientModel clienteId;
+    private ClientModel cliente;
 
     @Column(nullable = false)
     private LocalDateTime dataHora;
@@ -25,7 +25,7 @@ public class PedidoModel implements Serializable {
     private String status;
 
     @Column(nullable = false)
-    private BigDecimal vlTotal;
+    private BigDecimal valorTotal;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
     private List<ItemPedidoModel> itens = new ArrayList<>();
@@ -34,27 +34,28 @@ public class PedidoModel implements Serializable {
     private String cepEntrega;
 
     @Column
-    private String dsEntrega;
+    private String enderecoEntrega;
 
     public PedidoModel() {
         this.dataHora = LocalDateTime.now();
         this.status = "Processando";
     }
 
-    public Integer getCdPedido() {
-        return cdPedido;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setCdPedido(Integer cdPedido) {
-        this.cdPedido = cdPedido;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public ClientModel getClienteId() {
-        return clienteId;
+    public ClientModel getCliente() {
+        return cliente;
     }
 
-    public void setClienteId(ClientModel cliente) {
-        this.clienteId = cliente;
+    public void setCliente(ClientModel cliente) {
+        this.cliente = cliente;
     }
 
     public LocalDateTime getDataHora() {
@@ -73,12 +74,12 @@ public class PedidoModel implements Serializable {
         this.status = status;
     }
 
-    public BigDecimal getVlTotal() {
-        return vlTotal;
+    public BigDecimal getValorTotal() {
+        return valorTotal;
     }
 
-    public void setVlTotal(BigDecimal valorTotal) {
-        this.vlTotal = valorTotal;
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     public List<ItemPedidoModel> getItens() {
@@ -97,17 +98,18 @@ public class PedidoModel implements Serializable {
         this.cepEntrega = cepEntrega;
     }
 
-    public String getDsEntrega() {
-        return dsEntrega;
+    public String getEnderecoEntrega() {
+        return enderecoEntrega;
     }
 
-    public void setDsEntrega(String enderecoEntrega) {
-        this.dsEntrega = enderecoEntrega;
+    public void setEnderecoEntrega(String enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
     }
 
+    // Método para calcular o valor total
     public void calcularValorTotal() {
-        this.vlTotal = this.itens.stream()
-                .map(item -> item.getVlUnitario().multiply(new BigDecimal(item.getQtPedido())))
+        this.valorTotal = this.itens.stream()
+                .map(item -> item.getPrecoUnitario().multiply(new BigDecimal(item.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

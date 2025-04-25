@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="TBCLIENTE")
+@Table(name="TBCLIENT")
 public class ClientModel implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdCliente;
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(nullable = false)
     private String nmCliente;
@@ -28,15 +27,17 @@ public class ClientModel implements Serializable {
     @Column(nullable = false)
     private String dsSenha;
 
+    // Construtor vazio necessário para JPA
     public ClientModel() {
     }
 
-    public Integer getCdCliente() {
-        return cdCliente;
+    // Getters e Setters
+    public Integer getId() {
+        return id;
     }
 
-    public void setCdCliente(Integer cdCliente) {
-        this.cdCliente = cdCliente;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNmCliente() {
@@ -67,8 +68,8 @@ public class ClientModel implements Serializable {
         return dtNasc;
     }
 
-    public void setDtNasc(String dtNascimento) {
-        this.dtNasc = dtNascimento;
+    public void setDtNasc(String dtNasc) {
+        this.dtNasc = dtNasc;
     }
 
     public String getNuTelefone() {

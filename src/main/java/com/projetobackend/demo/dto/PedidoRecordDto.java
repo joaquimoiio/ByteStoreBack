@@ -9,5 +9,5 @@ public record PedidoRecordDto(
         @NotNull Integer clienteId,
         @NotEmpty List<ItemPedidoRecordDto> itens,
         String cepEntrega,
-        String dsEntrega) {
+        String enderecoEntrega) {
 }

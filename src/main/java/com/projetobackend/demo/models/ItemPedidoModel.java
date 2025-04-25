@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class ItemPedidoModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cdItemPedido;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
@@ -20,20 +20,21 @@ public class ItemPedidoModel implements Serializable {
     private ProdutoModel produto;
 
     @Column(nullable = false)
-    private Integer qtPedido;
+    private Integer quantidade;
 
     @Column(nullable = false)
-    private BigDecimal vlUnitario;
+    private BigDecimal precoUnitario;
 
     public ItemPedidoModel() {
     }
 
-    public Integer getCdItemPedido() {
-        return cdItemPedido;
+    // Getters e Setters
+    public Integer getId() {
+        return id;
     }
 
-    public void setCdItemPedido(Integer cdItemPedido) {
-        this.cdItemPedido = cdItemPedido;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public PedidoModel getPedido() {
@@ -52,24 +53,24 @@ public class ItemPedidoModel implements Serializable {
         this.produto = produto;
     }
 
-    public Integer getQtPedido() {
-        return qtPedido;
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
-    public void setQtPedido(Integer quantidade) {
-        this.qtPedido = quantidade;
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 
-    public BigDecimal getVlUnitario() {
-        return vlUnitario;
+    public BigDecimal getPrecoUnitario() {
+        return precoUnitario;
     }
 
-    public void setVlUnitario(BigDecimal precoUnitario) {
-        this.vlUnitario = precoUnitario;
+    public void setPrecoUnitario(BigDecimal precoUnitario) {
+        this.precoUnitario = precoUnitario;
     }
 
-
+    // Método para calcular o subtotal do item
     public BigDecimal getSubtotal() {
-        return vlUnitario.multiply(new BigDecimal(qtPedido));
+        return precoUnitario.multiply(new BigDecimal(quantidade));
     }
 }
