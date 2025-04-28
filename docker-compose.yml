@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # Serviço do banco de dados MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: bytestore-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ByteStore
+      MYSQL_USER: bytestore
+      MYSQL_PASSWORD: bytestore
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - bytestore-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Serviço da API Spring Boot
+  api:
+    build: .
+    container_name: bytestore-api
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ByteStore
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - bytestore-network
+
+volumes:
+  mysql-data:
+    name: bytestore-mysql-data
+
+networks:
+  bytestore-network:
+    name: bytestore-network
+    driver: bridge
