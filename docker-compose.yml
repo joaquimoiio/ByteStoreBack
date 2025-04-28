@@ -1,51 +1,31 @@
-version: '3.8'
-
-services:
-  # Serviço do banco de dados MySQL
-  mysql:
-    image: mysql:8.0
-    container_name: bytestore-mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ByteStore
-      MYSQL_USER: bytestore
-      MYSQL_PASSWORD: bytestore
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - bytestore-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # Serviço da API Spring Boot
-  api:
-    build: .
-    container_name: bytestore-api
-    restart: always
-    ports:
-      - "8081:8081"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ByteStore
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    depends_on:
-      mysql:
-        condition: service_healthy
-    networks:
-      - bytestore-network
-
-volumes:
-  mysql-data:
-    name: bytestore-mysql-data
-
-networks:
-  bytestore-network:
-    name: bytestore-network
-    driver: bridge
+# Estágio de build
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
+WORKDIR /app
+COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw mvnw
+COPY mvnw.cmd mvnw.cmd
+  
+  # Baixe todas as dependências primeiro (cache layer)
+RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline -B
+  
+  # Copie os arquivos fonte e compile
+COPY src src
+RUN --mount=type=cache,target=/root/.m2 mvn package -DskipTests
+  
+  # Estágio de execução
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+  
+  # Adicione um usuário não-root para executar a aplicação
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+  
+  # Copie o JAR compilado do estágio de build
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
+  
+  # Exponha a porta da aplicação
+EXPOSE 8081
+  
+  # Comando para executar a aplicação
+ENTRYPOINT ["java", "-jar", "app.jar"]
